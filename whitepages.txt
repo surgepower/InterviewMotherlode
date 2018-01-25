@@ -1,0 +1,90 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+    public static void main(String args[] ) throws Exception {
+        // List of integers representing the canyon.
+        List<Integer> input = new ArrayList<Integer>();
+        
+        // List of integers for each entry in the canyon, representing the optimal path to that point in the canyon.
+        List<List<Integer>> opt = new ArrayList<List<Integer>>();
+
+        // Read in input from standard in.
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNextInt()) {
+            // Add the entry to the canyon list.
+            input.add(scanner.nextInt());
+            
+            // Instantiate an empty list for a path to that entry in the canyon.
+            opt.add(new ArrayList<Integer>());
+        }
+        // Calculate the canyon length for bounds checking later on.
+        int inputLength = input.size();
+        
+        // Check that the canyon has at least a length of one.
+        if (inputLength <= 0) {
+            System.out.println("failure");
+            return;
+        }
+        
+        // Add a final entry for the optimal path to the point beyond the end of the canyon.
+        input.add(0);
+        opt.add(new ArrayList<Integer>());
+        
+        // Establish the base case. The shortest path to the first entry in
+        // the canyon will just be the first entry in the canyon.
+        List<Integer> initial = new ArrayList<Integer>();
+        initial.add(0);
+        opt.set(0, initial);
+        
+        // For as far as you can possibly go from the first entry, set each
+        // entry that can reach to be reachable from entry 0.
+        for (int i = 0; i <= input.get(0) && i <= inputLength; i++) {
+            opt.set(i, initial);
+        }
+        
+        // Iterate through the rest of the canyon list.
+        for (int i = 1; i <= inputLength; i++) {
+            // Get the list representing the path to point i and add i to that list.
+            List<Integer> newEntry = new ArrayList<Integer>(opt.get(i));
+            
+            // If we can't reach point i, then there's no point continuing since we won't be able to reach
+            // i + 1, i + 2, etc... So we can break.
+            if (newEntry.isEmpty()) {
+                break;
+            }
+            
+            // Add the entry i itself to the list.
+            newEntry.add(i);
+            
+            // Calculate the size of the path.
+            int newEntryLen = newEntry.size();
+            
+            // From point i, traverse forward at most n steps where n is the number of steps allowed from point i.
+            for (int j = i + 1; j <= i + input.get(i) && j <= inputLength; j++) {
+                // Get the list representing the path to point j.
+                List<Integer> existingPath = opt.get(j);
+                
+                // If the current path to j is empty, or the new path from i to j is shorter than the existing path to j,
+                // replace the path to j with the new path.
+                if (existingPath.isEmpty() || newEntryLen < existingPath.size()) {
+                    opt.set(j, newEntry);
+                }
+            }
+        }
+        
+        // Get the optimal path to the point beyond the end of the canyon.
+        List<Integer> optimalPath = opt.get(inputLength);
+        
+        // An empty list indicates that there is no such path.
+        if (optimalPath.isEmpty()) {
+            System.out.println("failure");
+        } else {
+            // Print out the path that has been found.
+            for (Integer entry : optimalPath) {
+                System.out.print(entry + ", ");
+            }
+            System.out.println("out");
+        }
+    }
+}

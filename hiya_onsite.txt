@@ -1,0 +1,18 @@
+Given a list, which can contain duplicate entries, of words, where each word is exactly 4 characters long, return four of those words which can be used to construct a magic square.
+
+MIST
+AREA
+MOAN
+ANTS
+
+Reads left to right, top to bottom.
+
+Use a trie, construct the square by row and column simultaneously.
+Preprocess the list.
+M1 I2 S3 T4 ... 
+
+Given an array of numbers which indicate the height of a bar in a histogram, return the area of the largest rectangle that can fit in the histogram.
+
+Divide and conquer - nlogn, find the minimum, multiply by range. Repeat.
+
+There's an O(n) solution. Use a stack.

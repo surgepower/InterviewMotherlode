@@ -1,0 +1,42 @@
+Indeed Onsite Interview
+17 November 2017
+
+1. Hackerrank
+Each user will enter a query.
+For example:
+A python          0
+A software        0
+A java            0
+B java            0
+B python          1 java
+C software        1 java python
+C python          1 software
+C java            3 python
+
+Write down the score at each query and the search terms. The score is the frequency of the most common query among other users who also entered the same query as you in the past. The queries are alphabetically softed and are the most common queries among the other users who entered the same query in the past.
+
+Solution:
+Use a map from users to list of queries.
+Use a map from query to list of users.
+Find the largest overlapping subset. Find the size of the subset. Return all terms that occur that many times.
+
+2.
+Given an array of Strings representing a Python program, return -1 if it's valid syntax and otherwise the line number at which the first syntax error occurs.
+The rules are:
+1) The first line cannot be indented
+2) Control statements end in a ':'
+3) A line following a control statement must have an indentation level that is at least one character greater than the previous line
+4) A line that doesn't follow a control statement must have an identation level that is either zero or matches the identation level of one of the control statements above it.
+
+Solution: Use a stack, push zero on. Each subsequent entry is the indentation level of the current control statement that we're in.
+
+3.
+We have a function now() which returns time in milliseconds.
+We have a constant WINDOW = 5 * 60 * 1000 = time frame of valid records.
+Write two functions: void record(int val) and double mean().
+Record stores the value at a given time. Mean returns the average of values from record in a valid time frame from now.
+
+Solution: Use a doubly linked list. Append to head when recording. Prune items from tail that are invalid. Keep a rolling sum.
+
+4.
+Given an infinite chess board, a list of obstacles on the chess board, a starting position, and a target position, write an algorithm that returns the fewest number of moves it will take for a knight to move from the start to the target position. Return -1 if a path doesn't exist.

@@ -1,0 +1,161 @@
+/*
+ * Complete the function below.
+ */
+static int cssStringToColor(String colorString) {
+    // Check that the colorString starts with a # and has a length of 4 or 7.
+    if (colorString.charAt(0) != '#' || !(colorString.length() == 4 || colorString.length() == 7)) {
+        throw new RuntimeException("Invalid color string.");
+    }
+
+    // Ignore the starting pound symbol.
+    String hex = colorString.substring(1);
+
+    // Initialize our red, green, and blue components.
+    int red = 0, green = 0, blue = 0;
+
+    // Check hex representation type.
+    if (hex.length() == 3) {
+        // Hex value is in the short format.
+        try {
+            // Parse the hex string (base 16).
+            red = Integer.parseInt("" + hex.charAt(0) + hex.charAt(0), 16);
+            green = Integer.parseInt("" + hex.charAt(1) + hex.charAt(1), 16);
+            blue = Integer.parseInt("" + hex.charAt(2) + hex.charAt(2), 16);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Invalid color string.");
+        }
+    } else {
+        // Hex value is in the long format.
+        try {
+            // Parse the hex string (base 16).
+            red = Integer.parseInt(hex.substring(0, 2) , 16);
+            green = Integer.parseInt(hex.substring(2, 4), 16);
+            blue = Integer.parseInt(hex.substring(4, 6), 16);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Invalid color string.");
+        }     
+    }
+    
+    // Return the resulting color: blue shifted two bytes + green shifted one byte + red.
+    return (blue << 16) + (green << 8) + red;
+}
+
+
+/* PLEASE DO NOT UNCOMMENT THIS BLOCK
+
+import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.util.*;
+// No other imports are permitted
+
+// The following definitions of Tree and Node are provided.
+// insert and delete will be methods of class Tree.
+
+public class Tree {
+    private class Node {
+        private int val;
+        private Node left = null;
+        private Node right = null;
+        private Node mid = null;
+
+        public Node(int val) {
+            this.val = val;
+        }
+    }
+
+    private Node root;
+*/ 
+
+    /* 
+     * Please complete this method.
+     * Inserts val into the tree.
+     */
+    public void insert(int val) {
+        this.root = insert(val, this.root);
+    }
+
+    public Node insert(int val, Node node) {
+        // Base case, if current node is null, create a new node and return it.
+        if (node == null) {
+            return new Node(val);
+        }
+        
+        // Compare value of current node with the value that we're inserting.
+        if (val < node.val) {
+            // Follow the left node and recurse.
+            node.left = insert(val, node.left);
+        } else if (val == node.val) {
+            // Follow the middle node and recurse.
+            node.mid = insert(val, node.mid);
+        } else {
+            // Follow the right node and recurse.
+            node.right = insert(val, node.right);
+        }
+        
+        // Return the updated node.
+        return node;
+    }
+
+    /* 
+     * Please complete this method.
+     * Deletes only one instance of val from the tree.
+     * If val does not exist in the tree, do nothing.
+     */
+    public void delete(int val) {
+        this.root = delete(val, this.root);
+    }
+
+    public Node delete(int val, Node node) {
+        // Base case, current node is null, the value is not in the tree.
+        if (node == null) {
+            return node;
+        }
+        
+        // Compare the value of the node with the value that we're deleting.
+        if (val < node.val) {
+            // Follow the left node and recurse.
+            node.left = delete(val, node.left);
+        } else if (val > node.val) {
+            // Follow the right node and recurse.
+            node.right = delete(val, node.right);
+        } else {
+            // Check if the node has a middle node.
+            if (node.mid != null) {
+                // Remove one of the middle nodes.
+                node.mid = node.mid.mid;
+            } else {
+                // Otherwise, the node doesn't have a middle node, we check left and right.
+                if (node.left == null && node.right == null) {
+                    // The node is a leaf node since it doesn't have a left, middle, or right.
+                    // Remove this node by setting it to null.
+                    node = null;
+                } else if (node.left == null) {
+                    // The node only has a right node, set node as the right node.
+                    node = node.right;
+                } else if (node.right == null) {
+                    // The node only has a left node, set node as the left node.
+                    node = node.left;
+                } else {
+                    // The node has both nodes.
+                    // Find the node with the next smallest value by searching in the right subtree.
+                    Node nextNode = minimumInTree(node.right);
+                    int nextVal = nextNode.val;
+                    
+                    // Update the current node with the next value.
+                    node.val = nextVal;
+                    // Delete the node with the same value in the right subtree.
+                    node.right = delete(nextVal, node.right);
+                }
+            }
+        }
+        return node;
+    }
+
+    // Finds the minimum value node in a BST starting from node.
+    public Node minimumInTree(Node node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }

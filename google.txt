@@ -1,0 +1,74 @@
+This is a game involving a mystery word. You are guess what the word is. For each guess, you receive the number of correct letters that exist in that word.
+
+Example:
+Mystery word is: zebra
+
+I guess: extra and get back 3 because e, r, and a are characters in zebra
+there are 3 letters in common
+
+Other words:
+brake 4
+cobra 3
+trail 2
+
+// -1 indicates an exact match.
+private int findCommon(String s1, String s2) {
+	if (s1.equals(s2)) {
+		return -1;
+	}
+
+	List<Character> c1 = new ArrayList<>(s1.toCharArray());
+	List<Character> c2 = new ArrayList<>(s2.toCharArray());
+
+	Comparator<Character> comp = new Comparator<Character>() {
+		@Override
+		int compare(Character char1, Character char2) {
+			return Character.compare(char1, char2);
+		});
+
+
+	Collections.sort(c1, comp);
+	Collections.sort(c2, comp);
+
+	int i = 0
+	int a = 0;
+	int b = 0;
+
+	while (a < c1.size() && b < c2.size()) {
+		if (c1.get(a) == c2.get(b)) {
+			i++;
+		} else if (c1.get(a) > c2.get(b)) {
+			b++;
+		} else {
+			a++
+		}
+	}
+
+	return i;
+}
+
+private String game(List<String> dict, String mystery) {
+	int matches = 0;
+	String guess = dict.get(0);
+
+	while(true) {
+		matches = findCommon(mystery, guess);
+		if (matches < 0) {
+			return guess;
+		}
+	
+		for (int i = 0; i < dict.size(); ) {
+			String curr = dict.get(i);
+			int common = findCommon(guess, curr);
+			if (common < matches || common > matches) {
+				dict.remove(i);
+			} else if (common == matches){
+				guess = curr;
+				break;
+				i++;
+			} else {
+				i++;
+			}
+		}
+	}
+} 

@@ -1,0 +1,103 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+import com.google.gson.*;
+
+public class Solution {
+    public static void main(String args[] ) throws Exception {
+        Store basicStore = new Store();
+        Scanner scan = new Scanner(System.in);
+
+        JsonParser jsonParser = new JsonParser();
+        while(scan.hasNextLine()) {
+            String line = scan.nextLine();
+            int split = line.indexOf(' ');
+            String command = line.substring(0, split);
+            String json = line.substring(split + 1);
+
+            JsonObject jsonObject = jsonParser.parse(json).getAsJsonObject();
+            if (command.equals("add")) {
+                basicStore.add(jsonObject);
+            } else if (command.equals("get")) {
+                basicStore.get(jsonObject);
+            } else if (command.equals("delete")) {
+                basicStore.delete(jsonObject);
+            } else {
+                return;
+            }
+        }
+    }
+    
+    public static class Store {
+        List<JsonObject> store = new ArrayList<JsonObject>();
+        
+        public void add(JsonObject jsonObject) {
+            store.add(jsonObject);            
+        }
+
+        public void get(JsonObject jsonObject) {
+            List<Integer> matches = findMatches(jsonObject);
+            for (Integer i : matches) {
+                System.out.println(store.get(i));
+            }
+        }
+
+        public void delete(JsonObject jsonObject) {
+            List<Integer> matches = findMatches(jsonObject);
+            for (int i = matches.size() - 1; i >= 0; i--) {
+                store.remove((int)matches.get(i));
+            }
+        }
+        
+        private List<Integer> findMatches(JsonObject object) {
+            List<Integer> matches = new ArrayList<>();
+            for (int i = 0; i < store.size(); i++) {                
+                if (objectIsMatch(object, store.get(i))) {
+                    matches.add(i);
+                }                
+            }   
+            return matches;
+        }
+        
+        private static boolean objectIsMatch(JsonObject target, JsonObject src) {
+            Set<Map.Entry<String, JsonElement>> targetEntries = target.entrySet();
+            for (Map.Entry<String, JsonElement> entry: targetEntries) {
+                String targetKey = entry.getKey();                
+                if (src.has(targetKey)) {
+                    if (!elementIsMatch(entry.getValue(), src.get(targetKey))) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        private static boolean elementIsMatch(JsonElement target, JsonElement src) {
+            if (target instanceof JsonObject && src instanceof JsonObject) {
+                JsonObject tPrim = (JsonObject) target;
+                JsonObject sPrim = (JsonObject) src;
+                return objectIsMatch(tPrim, sPrim);
+            } else if (target instanceof JsonPrimitive && src instanceof JsonPrimitive) {
+                JsonPrimitive tPrim = (JsonPrimitive) target;
+                JsonPrimitive sPrim = (JsonPrimitive) src;
+                return tPrim.equals(sPrim);
+            } else if (target instanceof JsonArray && src instanceof JsonArray) {
+                JsonArray tPrim = (JsonArray) target;
+                JsonArray sPrim = (JsonArray) src;                
+                for (JsonElement el : tPrim) {
+                    if (!sPrim.contains(el)) {
+                        return false;
+                    }
+                }
+                return true;
+            } else if (target instanceof JsonNull && src instanceof JsonNull) {
+                return true;
+            }
+            return false;
+        }
+    }
+}

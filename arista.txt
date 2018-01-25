@@ -1,0 +1,6 @@
+Arista Phone Interview
+6 November 2017
+
+If we have an iterator for a vector, explain why it's unsafe to use the iterator if we, at any point, add to it.
+
+Create a safe iterator.

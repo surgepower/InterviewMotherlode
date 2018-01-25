@@ -1,0 +1,22 @@
+RetailMeNot
+Coupon - int discount, String merchantId
+Given a list of coupons, a maxCouponsPerMerchant integer, and a maxListSize
+Return a list of maxListSize with the best coupons overall, and at most maxCouponsPerMerchant per merchant
+Sort, use HashMap to keep track of max per merchant 
+
+Given two lists of coupons, create bundles, sorted by merchantId
+Walk down both lists simultaneously
+If one list is a lot larger, use binary search with the first list as the index to search for
+
+Indeed
+Design an ExpiringMap<K, V> class
+put(K key, V value, long duration)
+get(K key) - returns null if value has expired
+
+Used HashMap with Value<V> class
+- Out of memory issues, can remove expired values on put or get
+
+ExtraHop
+Monotonically increase Chart c, with maxX(), minX(), and getY(x) methods
+Given a y, find the x
+- Binary search

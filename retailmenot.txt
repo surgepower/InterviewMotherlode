@@ -1,0 +1,57 @@
+RetailMeNot Interview Questions
+3 November 2017
+
+1. 
+There is a page with a list of coupons. Each coupon is placed with a rule indicating their position. Positions can be specified as exact with "=" or at least with "<=".
+Define a Rule as:
+Rule {
+	int position;
+	String operator; // Can only be = or <=
+}
+
+Given a set of Rules which are guaranteed to be valid, along with a new rule, return true if the new set of Rules is also valid, otherwise false.
+
+A = 2
+B <= 2
+C <= 4
+-------
+D <= 3 true
+-------
+D <= 2 false
+-------
+D = 4 true
+
+Count number of rules and number of available slots. See if inserting a new rule is possible.
+If rule is "=", see if there are any other "=" like it. Return false if found.
+For both types of rules, count sum of rules at position i in the list of coupons.
+
+2.
+There is an airport with one runway. There are n planes, in a list, scheduled for landing. Each plane has an integer amount of fuel left, representing the amount of minutes they can stay aloft. No two planes have the same amount of fuel. It takes 1 minute to land each plane. The planes must be landed according to two rules:
+1. Any plane with zero fuel must be landed immediately
+2. Planes should otherwise be landed in first come first serve fashion.
+Input is an array of integers representing the amount of fuel the plane at index i has. Return a list of plane numbers in the order that they are landed.
+[1, 5, 0, 3] -> [2, 0, 1, 3]
+Plane 2 has no fuel and is landed immediately. Next, plane 0 has no fuel. We then use first come first serve to land plane 1 and finally plane 3.
+
+Use naive approach and optimize. O(n) time.
+
+3.
+Seam slicing. 
+Given an image, you can trace a path from top to bottom with the least amount of information and remove it.
+The image will be represented as an n x m matrix where each entry represents the amount of information at the pixel specified. Every pixel's information value is an integer that is greater than zero.
+1 2 3
+2 1 2
+1 4 4
+Two pixels can be connected if their corners touch or if they are stacked on top of each other. Return the optimal path that can be found.
+The optimal path here is (0,0), (1,1), (0,2).
+
+Computed in O(n x m) time. Compute each row's minimum path value. Add each row iteratively and choose the best path to come from.
+
+4.
+Packets with different sizes need to be packed together with a size less than a specified maximum to make the fewest packets. The packets are given as a list of integer values. Return a list of packets, with each packet as a list of integers, to indicate the groupings. All packets will have an integer size less than or equal to the max packet size and greater than zero.
+packets = [2, 1, 1]
+max = 2
+[[2], [1, 1]]
+
+Take the maximum packet, grab the next biggest packet that will fit. Repeat until filled. Finalize that as a packet and continue.
+Use a balanced binary search tree to store the packet data. Grab max, delete from tree. O(nlog(n))

@@ -1,0 +1,52 @@
+SELECT D.DEPT_NAME, COALESCE(R.NUM, 0)
+FROM DEPARTMENTS AS D LEFT JOIN (SELECT S.DEPT_ID, COUNT(*) AS NUM FROM STUDENTS AS S GROUP BY S.DEPT_ID) AS R
+ON D.DEPT_ID = R.DEPT_ID
+ORDER BY R.NUM DESC, D.DEPT_NAME ASC
+
+
+# Complete the function below.
+
+def isDistanceOne(s1, s2):
+    result = False
+    for i in range(len(s1)):
+        if s1[i] != s2[i]:
+            if result:
+                return False
+            else:
+                result = True
+    return result
+
+def  findMutationDistance(start, end, bank):
+    if end not in bank:
+        return -1
+    
+    if start not in bank:
+        bank.add(start)
+    
+    queue = []
+    queue.append((end, 0))
+    
+    bank.remove(end)
+    
+    while len(bank) != 0:
+        currStrand, currDist = bank.pop(0)
+        
+        if currStrand == start:
+            return currDist
+        for mutation in bank:
+            if isDistanceOne(mutation, currStrand):
+                bank.remove(mutation)
+                queue.append((mutation, currDist + 1))
+    return -1
+
+
+
+def isDistanceOne(s1, s2):
+    result = False
+    for i in range(len(s1)):
+        if s1[i] != s2[i]:
+            if result:
+                return False
+            else:
+                result = True
+    return result

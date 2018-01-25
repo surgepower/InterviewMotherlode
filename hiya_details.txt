@@ -1,0 +1,11 @@
+platform
+infrastructure
+aws, clusters, networking
+systems
+
+gateway, matt
+apis, run on infrastrucutre
+
+client
+android, ios
+

@@ -1,0 +1,29 @@
+ExtraHop Onsite Interview
+10 November 2017
+
+1.
+Given an integer, that is constrained between [0 - 999] inclusive, give a method named intToWord that returns a String representing the English word equivalent.
+
+Solution: Use a hashmap to handle special cases, check for number greater than a hundred, check for zero.
+
+Now expand the range to be from [0 to 1 trillion), inclusive, exclusive. Write a function largeIntToWord that returns the same thing as before.
+
+Solution: Partition the number by thousands and use the method intToWord.
+
+2.
+Define a Node to contain an exponent, a coefficient, and a pointer to the next Node.
+A linked list of nodes is effectively a polynomial.
+Given two polynomials where the exponents are strictly decreasing as we move from head to tail, write a method add that returns the sum.
+
+Solution: Walk down both lists and add two together when the exponents are the same.
+
+3.
+Implement a Least Recently Used cache with the following methods:
+public void set(int key, int value); // O(1)
+public int get(int key); // O(1)
+public LRU(int capacity);
+
+Solution: Use a HashMap for the data and a Doubly Linked List for eviction policy. Map integers to nodes in the linked list. Nodes contain values.
+
+4.
+Reverse a singly linked list.

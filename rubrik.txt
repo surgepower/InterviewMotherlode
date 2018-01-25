@@ -1,0 +1,19 @@
+Rubrik Phone Interview
+8 November 2017
+
+In security, there is a rotation cipher (ROT-X) which, when given a string, rotates all of the letters in the exact same way. For example, ROT-13, rotates all of the letters 13 times.
+ROT-1, rotates all of the letters once.
+ROT-1 of bc = ab
+ROT-1 of ab = za
+ROT-2 of bc = za
+
+Consider the following function:
+bool isRotation(String s1, String s2):
+	returns true if we can rotate s1 to get s2 or vice versa, otherwise false.
+
+Now, consider a list of strings, ["ab", "bc", "za", "bbb", "aaa", "aAa", "b!!"]
+Group the strings such that all the strings belonging to a group are rotations of one another. For this problem, rotating is only defined for lowercase letters. Thus, ROT-1 of bBb! = aBa!
+Here, we would expect the groupings [["ab", "bc", "za"], ["bbb", "aaa"], ["aAa"], ["b!!"]]
+
+Solution:
+Iterate once through the list of strings and "normalize" each such that the first rotatable character is always 'a'. Then create a map from normalized strings to list of strings that can be rotated to that normal form.
